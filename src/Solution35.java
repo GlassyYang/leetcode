@@ -2,6 +2,8 @@ public class Solution35 {
 
     public static int searchInsert(int[] nums, int target) {
 
+        if(nums[0] > target) return 0;
+        if(nums[0] == target) return 0;
         int start = 0, end = nums.length;
         int mid = (start + end) / 2;
         while(start < mid){
@@ -13,7 +15,8 @@ public class Solution35 {
                 return mid;
             mid = (start + end) / 2;
         }
-        return end;
+
+        return (end < nums.length && nums[end] < target) ? end + 1 : end;
     }
 
     public static void main(String[] args) {
