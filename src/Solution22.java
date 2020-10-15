@@ -2,46 +2,38 @@ import java.util.*;
 
 public class Solution22 {
 
-    public static List<String> generateParenthesis(int n) {
+    public List<String> generateParenthesis(int n) {
         List<String> ans = new ArrayList<>();
+        if(n <= 0) return ans;
         Stack<Character> sta = new Stack<>();
         StringBuilder builder = new StringBuilder();
-        int length = 2 * n;
-        int[] num = {n, n};
-        while(true){
-            if(num[0] > 0 && num[0] <= num[1]){
-                sta.push('(');
-                num[0]--;
-            }else if(num[1] > 0 && num[0] <= num[1]){
-                sta.push(')');
-                num[1]--;
-            }else if(num[0] <= 0 && num[1] <= 0){
-                builder.setLength(0);
-                for(char e : sta){
-                    builder.append(e);
-                }
-                ans.add(builder.toString());
-                num[sta.pop() - '(']++;
-            }else{
-                while(!sta.empty() && (num[1] > num[0] || sta.peek() == ')')){
-                    num[sta.peek() - '(']++;
-                    sta.pop();
-                }
-                if(sta.empty()){
-                    break;
-                }else{
-                    num[sta.peek() - '('] ++;
-                    sta.pop();
-                    sta.push(')');
-                    num[1]--;
-                }
-            }
-        }
+        recusive(sta, n, n, ans);
         return ans;
     }
 
+    private void recusive(Stack<Character> sta, int preNum, int sufNum, List<String> ans){
+        if(preNum == 0 && sufNum == 0){
+            StringBuilder builder = new StringBuilder();
+            for(char e : sta){
+                builder.append(e);
+            }
+            ans.add(builder.toString());
+            return;
+        }
+        if(preNum > 0 && preNum <= sufNum){
+            sta.push('(');
+            recusive(sta, preNum - 1, sufNum, ans);
+            sta.pop();
+        }
+        if(sufNum > 0){
+            sta.push(')');
+            recusive(sta, preNum, sufNum - 1, ans);
+            sta.pop();
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println(generateParenthesis(3));
+        System.out.println(new Solution22().generateParenthesis(3));
     }
 
 }

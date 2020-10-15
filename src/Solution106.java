@@ -35,7 +35,7 @@ public class Solution106 {
     public static void main(String[] args) {
         int[] in = {9,3,15,20,7}, post = {9,15,7,20,3};
         Solution106 solu = new Solution106();
-        solu.buildTree(in, post);
+        TreeNode ans = solu.buildTree(in, post);
     }
 
 }
