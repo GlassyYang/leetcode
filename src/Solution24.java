@@ -13,11 +13,8 @@ public class Solution24 {
             odd.next = even.next;
             even.next = odd;
             odd = odd.next;
-            if(odd != null){
-                even = odd.next;
-            }else{
-                even = null;
-            }
+            if(odd != null) even = odd.next;
+            else even = null;
         }
         return head;
     }
