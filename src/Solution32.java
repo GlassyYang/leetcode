@@ -9,14 +9,14 @@ public class Solution32 {
         for (int i = 0; i < s.length(); i++) {
             if(s.charAt(i) == '(') sta.push(i);
             else{
-                if(sta.size() == 1){
-                    max = Math.max(max, i - sta.peek());
-                    sta.pop();
+                sta.pop();
+                if (sta.empty()) {
                     sta.push(i);
-                }else sta.pop();
+                } else {
+                    max = Math.max(max, i - sta.peek());
+                }
             }
         }
-        max =Math.max(max, s.length() - sta.peek() - 1);
         return max;
     }
 
