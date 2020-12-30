@@ -2,76 +2,41 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Solution10 {
-    // 得用栈
-    public static boolean isMatch(String s, String p) {
-        int si = 0;
-        int pi = 0;
-        Queue<Character> sta = new LinkedList<>();
-        while (si < s.length() && pi < p.length()) {
-            if (pi + 1 < p.length() && p.charAt(pi + 1) == '*') {
-                if (p.charAt(pi) == '.') {
-                    sta.add(s.charAt(si));
-                    si++;
-                } else if (p.charAt(pi) == s.charAt(si)) {
-                    sta.add(p.charAt(pi));
-                    si++;
-                } else {
-                    int temp = pi;
-                    pi++;
-                    while (pi < p.length() && p.charAt(pi) == '*') {
-                        pi++;
-                    }
-                    while (pi < p.length() && p.charAt(pi) == p.charAt(temp)) {
-                        if (sta.peek() != p.charAt(pi)) {
-                            return false;
-                        }
-                        pi++;
+    // 得用栈。不过在这之前用动态规划的方法做一下
+
+    public boolean isMatch(String s, String p) {
+        boolean dp[][] = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        for(int i = 1; i < dp.length; i++){
+            dp[i][0] = false;
+        }
+        for (int i = 1; i < dp[0].length; i++) {
+            if (p.charAt(i - 1) == '*') dp[0][i] = dp[0][i - 2];
+            else dp[0][i] = false;
+        }
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 1; j <= p.length(); j++) {
+                int si = i - 1, sj = j - 1;
+                if(s.charAt(si) == p.charAt(sj) || p.charAt(sj) == '.') dp[i][j] = dp[i - 1][j - 1];
+                else if (p.charAt(sj) == '*') {
+                    if (s.charAt(si) != p.charAt(sj - 1) && p.charAt(sj - 1) != '.') dp[i][j] = dp[i][j - 2];
+                    else {
+                        dp[i][j] = false;
+                        dp[i][j] |= dp[i][j - 2];
+                        dp[i][j] |= dp[i - 1][j];
+                        dp[i][j] |= dp[i - 1][j - 2];
                     }
                 }
-            } else if (p.charAt(pi) == '.') {
-                si++;
-                pi++;
-            } else if (p.charAt(pi) != s.charAt(si)) {
-                return false;
-            } else {
-                pi++;
-                si++;
+                else dp[i][j] = false;
             }
         }
-        if (pi < p.length() - 1 && p.charAt(pi + 1) == '*') {
-            pi++;
-            while (pi < p.length() && p.charAt(pi) == '*') {
-                pi++;
-            }
-        }
-        while (pi < p.length() && sta.size() != 0) {
-            if (pi + 1 < p.length() && p.charAt(pi + 1) == '*') {
-                pi++;
-                while (p.charAt(pi) == '*') {
-                    pi++;
-                }
-            } else if (p.charAt(pi) == sta.peek() || p.charAt(pi) == '.') {
-                pi++;
-                sta.poll();
-            } else {
-                return false;
-            }
-        }
-        if (pi < p.length() - 1 && p.charAt(pi + 1) == '*') {
-            pi++;
-            while (pi < p.length() && p.charAt(pi) == '*') {
-                pi++;
-            }
-        }
-        if (si >= s.length() && pi >= p.length()) {
-            return true;
-        }
-        return false;
+        return dp[s.length()][p.length()];
     }
 
     public static void main(String argv[]) {
         int[] nums1 = {1, 3};
         int[] nums2 = {2};
-        System.out.println(isMatch("aasdfasdfasdfasdfas", "aasdf.*asdf.*asdf.*asdf.*s"));
+        Solution10 solu = new Solution10();
+        System.out.println(solu.isMatch("aab", "c*a*b"));
     }
 }
