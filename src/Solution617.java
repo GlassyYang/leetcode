@@ -13,13 +13,11 @@ public class Solution617 {
             merge.val = t2.val;
             merge.left = t2.left;
             merge.right = t2.right;
-        }
-        else if (t2 == null) {
+        } else if (t2 == null) {
             merge.val = t1.val;
             merge.left = t1.left;
             merge.right = t1.right;
-        }
-        else {
+        } else {
             merge.val = t1.val + t2.val;
             if (t1.left != null || t2.left != null) {
                 merge.left = new TreeNode();

@@ -3,50 +3,45 @@ import java.util.*;
 public class OfferSolution12 {
 
     class Pair {
-        int i, j;
-        Pair(int i , int j) {
+        int i, j, dir, si;
+        Pair(int i , int j, int dir, int si) {
             this.i = i;
             this.j = j;
+            this.dir = dir;
+            this.si = si;
         }
     }
 
     public boolean exist(char[][] board, String word) {
         int index = 0;
+        int m = board.length, n = board[0].length;
         Stack<Pair> sta = new Stack<>();
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        boolean[][] recorder = new boolean[board.length][board[0].length];
+        Pair temp;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == word.charAt(index)) {
-                    int curI = i, curJ = j;
-                    sta.push(new Pair(curI, curJ));
-                    board[curI][curJ] = '\00';
-                    index++;
-                    while (index < word.length()) {
-                        if (curI > 0 && board[curI - 1][curJ] == word.charAt(index)) {
-                            curI -= 1;
-                            board[curI][curJ] = '\00';
-                            sta.push(new Pair(curI, curJ));
-                        } else if (curI < board.length - 1 && board[curI + 1][curJ] == word.charAt(index)) {
-                            curI += 1;
-                            board[curI][curJ] = '\00';
-                            sta.push(new Pair(curI, curJ));
-                        } else if (curJ > 0 && board[curI][curJ - 1] == word.charAt(index)) {
-                            curJ -= 1;
-                            board[curI][curJ] = '\00';
-                            sta.push(new Pair(curI, curJ));
-                        }  else if (curJ < board[curI].length - 1 && board[curI][curJ + 1] == word.charAt(index)) {
-                            curJ += 1;
-                            board[curI][curJ] = '\00';
-                            sta.push(new Pair(curI, curJ));
-                        } else {
-                            break;
+                    // 深度优先搜索
+                    sta.push(new Pair(i, j, 0, 0));
+                    recorder[i][j] = true;
+                    while (!sta.isEmpty()) {
+                        temp = sta.peek();
+                        if (temp.si >= word.length() - 1) return true;
+                        if (temp.dir >= 4) {
+                            recorder[temp.i][temp.j] = false;
+                            sta.pop();
                         }
-                        index++;
-                    }
-                    if (index == word.length()) return true;
-                    else {
-                        while (!sta.isEmpty()) {
-                            Pair temp = sta.pop();
-                            board[temp.i][temp.j] = word.charAt(--index);
+                        while (temp.dir < 4) {
+                            int ni = temp.i + directions[temp.dir][0], nj = temp.j + directions[temp.dir][1];
+                            temp.dir++;
+                            if (ni >= 0 && ni < m && nj >= 0 && nj < n && !recorder[ni][nj]) {
+                                if (board[ni][nj] == word.charAt(temp.si + 1)) {
+                                    recorder[ni][nj] = true;
+                                    sta.push(new Pair(ni, nj, 0, temp.si + 1));
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
@@ -56,9 +51,8 @@ public class OfferSolution12 {
     }
 
     public static void main(String[] args) {
-//        char[][] board = {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
-        char[][] board = {{'a'}, {'a'}};
-        String word = "ABCCED";
+        char[][] board = {{'C','A','A'},{'A','A','A'},{'B','C','D'}};
+        String word = "AAB";
         OfferSolution12 solu = new OfferSolution12();
         System.out.println(solu.exist(board, word));
     }
