@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class OffSolution10II {
+public class OfferSolution10II {
 
     public int numWays(int n) {
         if (n == 0) return 1;
