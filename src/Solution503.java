@@ -1,6 +1,7 @@
 import java.util.*;
 
 public class Solution503 {
+
     // 理解错了题意
     public int[] nextGreaterElementsA(int[] nums) {
         //二分搜索改版
