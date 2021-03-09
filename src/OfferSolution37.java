@@ -2,6 +2,7 @@ import org.junit.platform.commons.util.StringUtils;
 
 import java.util.*;
 
+// 本题和
 public class OfferSolution37 {
 
     public static void main(String[] args) {
@@ -70,6 +71,22 @@ class Codec {
                 index++;
             }
         }
+        return root;
+    }
+}
+
+class CodecBug {
+
+    // Encodes a tree to a single string.
+    private TreeNode root;
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        this.root =root;
+        return null;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
         return root;
     }
 }
