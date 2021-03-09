@@ -14,9 +14,8 @@ public class Solution1047 {
             }
         }
         StringBuilder builder = new StringBuilder();
-        Iterator<Character> iter = sta.iterator();
-        while (iter.hasNext()) {
-            builder.append(iter.next());
+        for (Character character : sta) {
+            builder.append(character);
         }
         return builder.toString();
     }
@@ -26,4 +25,21 @@ public class Solution1047 {
         System.out.println(solu.removeDuplicates("abbacbaabca"));
     }
 
+}
+
+class Solution {
+    // 深入理解java字符串和String之间的转换
+    public String removeDuplicates(String S) {
+        int index = -1;
+        char[] chars = S.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (index >= 0 && chars[index] == chars[i]) {
+                index--;
+            } else {
+                index++;
+                chars[index] = chars[i];
+            }
+        }
+        return String.copyValueOf(chars, 0, index + 1);
+    }
 }
