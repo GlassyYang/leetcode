@@ -6,7 +6,6 @@ public class Solution564 {
             return 9+"";
         else if(nInt<=10)
             return Math.abs(nInt-1)+"";
-
         //如果位数为偶数则为0，否则为1
         int mid = n.length()%2;
         //为最中间数的索引，索引是从0开始的
