@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 
-
-=======
->>>>>>> origin/master
 import java.util.*;
 
 // 本题和
